@@ -31,16 +31,16 @@ type CreateFeedFollowParams struct {
 	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	UserID    uuid.NullUUID
-	FeedID    uuid.NullUUID
+	UserID    uuid.UUID
+	FeedID    uuid.UUID
 }
 
 type CreateFeedFollowRow struct {
 	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	UserID    uuid.NullUUID
-	FeedID    uuid.NullUUID
+	UserID    uuid.UUID
+	FeedID    uuid.UUID
 	FeedName  string
 	UserName  string
 }
@@ -72,8 +72,8 @@ DELETE FROM feed_follows WHERE feed_id = $1 AND user_id = $2
 `
 
 type DeleteFeedFollowParams struct {
-	FeedID uuid.NullUUID
-	UserID uuid.NullUUID
+	FeedID uuid.UUID
+	UserID uuid.UUID
 }
 
 func (q *Queries) DeleteFeedFollow(ctx context.Context, arg DeleteFeedFollowParams) error {
@@ -94,13 +94,13 @@ type GetFeedFollowForUserRow struct {
 	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	UserID    uuid.NullUUID
-	FeedID    uuid.NullUUID
+	UserID    uuid.UUID
+	FeedID    uuid.UUID
 	FeedName  string
 	UserName  string
 }
 
-func (q *Queries) GetFeedFollowForUser(ctx context.Context, userID uuid.NullUUID) ([]GetFeedFollowForUserRow, error) {
+func (q *Queries) GetFeedFollowForUser(ctx context.Context, userID uuid.UUID) ([]GetFeedFollowForUserRow, error) {
 	rows, err := q.db.QueryContext(ctx, getFeedFollowForUser, userID)
 	if err != nil {
 		return nil, err

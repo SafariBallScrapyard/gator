@@ -23,14 +23,8 @@ func handlerFollow(s *state, cmd command, user database.User) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID: uuid.NullUUID{
-			UUID:  user.ID,
-			Valid: true,
-		},
-		FeedID: uuid.NullUUID{
-			UUID:  feed.ID,
-			Valid: true,
-		},
+		UserID:    user.ID,
+		FeedID:    feed.ID,
 	})
 	if err != nil {
 		return fmt.Errorf("could not create feed follow: %w", err)
@@ -42,7 +36,7 @@ func handlerFollow(s *state, cmd command, user database.User) error {
 }
 
 func handlerListFeedFollows(s *state, cmd command, user database.User) error {
-	feedFollows, err := s.db.GetFeedFollowForUser(context.Background(), uuid.NullUUID{UUID: user.ID, Valid: true})
+	feedFollows, err := s.db.GetFeedFollowForUser(context.Background(), user.ID)
 	if err != nil {
 		return fmt.Errorf("could not extract feeds: %w", err)
 	}
@@ -71,14 +65,8 @@ func handlerUnfollow(s *state, cmd command, user database.User) error {
 	}
 
 	err = s.db.DeleteFeedFollow(context.Background(), database.DeleteFeedFollowParams{
-		UserID: uuid.NullUUID{
-			UUID:  user.ID,
-			Valid: true,
-		},
-		FeedID: uuid.NullUUID{
-			UUID:  feed.ID,
-			Valid: true,
-		},
+		UserID: user.ID,
+		FeedID: feed.ID,
 	})
 	if err != nil {
 		return fmt.Errorf("could not unfollow feed: %w", err)

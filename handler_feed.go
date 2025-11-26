@@ -20,12 +20,9 @@ func handlerAddFeed(s *state, cmd command, user database.User) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID: uuid.NullUUID{
-			UUID:  user.ID,
-			Valid: true,
-		},
-		Name: name,
-		Url:  url,
+		UserID:    user.ID,
+		Name:      name,
+		Url:       url,
 	})
 	if err != nil {
 		return fmt.Errorf("could not generate RSS feed: %w", err)
@@ -35,14 +32,8 @@ func handlerAddFeed(s *state, cmd command, user database.User) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID: uuid.NullUUID{
-			UUID:  user.ID,
-			Valid: true,
-		},
-		FeedID: uuid.NullUUID{
-			UUID:  feed.ID,
-			Valid: true,
-		},
+		UserID:    user.ID,
+		FeedID:    feed.ID,
 	})
 	if err != nil {
 		return fmt.Errorf("could not extract feeds: %w", err)
@@ -71,7 +62,7 @@ func handlerListFeeds(s *state, cmd command) error {
 
 	fmt.Printf("Found %d feeds:\n", len(feeds))
 	for _, feed := range feeds {
-		user, err := s.db.GetUserById(context.Background(), feed.UserID.UUID)
+		user, err := s.db.GetUserById(context.Background(), feed.UserID)
 		if err != nil {
 			return fmt.Errorf("could not identify user: %w", err)
 		}
